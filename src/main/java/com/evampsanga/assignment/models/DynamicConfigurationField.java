@@ -1,0 +1,36 @@
+package com.evampsanga.assignment.models;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
+@Data
+public class DynamicConfigurationField {
+//    private FieldType fieldType = FieldType.Regular;
+    private FieldType fieldType;
+
+    @JsonFormat(shape = JsonFormat.Shape.BOOLEAN)
+    private boolean isMandatory = false;
+
+    private String sourceField;
+
+    private String targetEntity;
+
+    private String targetField;
+
+//    private DataType dataType = DataType.Text;
+    private DataType dataType;
+
+    private String mappingKey;
+
+    private String dateFormat;
+
+    private String validationPattern;
+
+    private Integer regexCaptureGroupNr;
+
+    public String entityKey() {
+        return targetEntity == null ? this.getSourceField() : targetEntity + "." + targetField;
+    }
+}
