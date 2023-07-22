@@ -26,7 +26,7 @@ public class DataTransformationService {
         this.appConfiguration = appConfiguration;
     }
 
-    public String transformData(String filePath, String configFilePath) {
+    public String transformData() {
         List<CsvData> csvDataList = csvParser.parseCsvFile(appConfiguration.getInputFilePath());
         DynamicConfiguration dynamicConfiguration = dynamicConfiguratoinService.loadDynamicConfiguration(appConfiguration.getDynamicConfig());
 

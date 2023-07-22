@@ -30,7 +30,7 @@ public class ActionCodeTransformer implements DataTransformationStrategy {
 
         // Validate data type if specified in the dynamic configuration
         if (field.getDataType() != null) {
-            if (!Utils.validateDataType(fieldValue, field.getDataType())) {
+            if (!Utils.validateDataType(fieldValue, field.getDataType(), field.getDateFormat())) {
                 log.warn("Invalid data type for field: {} with value: {} for CsvData with SystemId: {}",
                         fieldName, fieldValue, csvData.getSystemId());
                 return null;

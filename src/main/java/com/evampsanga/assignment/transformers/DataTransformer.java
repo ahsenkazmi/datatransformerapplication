@@ -1,5 +1,6 @@
 package com.evampsanga.assignment.transformers;
 
+import com.evampsanga.assignment.configs.AppConfiguration;
 import com.evampsanga.assignment.models.*;
 import com.evampsanga.assignment.parsers.ResponseParser;
 import com.evampsanga.assignment.responses.ResponseVO;
@@ -11,7 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
@@ -20,27 +22,32 @@ public class DataTransformer {
 
 
     private final List<DataTransformationStrategy> transformationStrategies;
-    private final ObjectMapper objectMapper;
     private final Utils utils;
+    private final AppConfiguration config;
+    private  ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    public DataTransformer(List<DataTransformationStrategy> transformationStrategies, ObjectMapper objectMapper, Utils utils) {
+    public DataTransformer(List<DataTransformationStrategy> transformationStrategies, Utils utils, AppConfiguration config) {
         this.transformationStrategies = transformationStrategies;
-        this.objectMapper = objectMapper;
         this.utils = utils;
+        this.config = config;
     }
 
     public String transformToJSON(List<CsvData> csvDataList, DynamicConfiguration dynamicConfiguration) {
         List<Map<String, Object>> transformedDataList = new ArrayList<>();
 
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("fname", getFileName(config.getInputFilePath()));
+        responseMap.put("uuid", UUID.randomUUID().toString());
         for (CsvData csvData : csvDataList) {
             Map<String, Object> transformedData = transformCsvData(csvData, dynamicConfiguration);
             if (transformedData != null) {
                 transformedDataList.add(transformedData);
             }
         }
+        responseMap.put("payload", transformedDataList);
         ResponseParser responseParser = new ResponseParser();
-        ResponseVO responseVO = responseParser.createResponseVOJson(transformedDataList);
+        ResponseVO responseVO = responseParser.createResponseVOJson(responseMap);
 
         // Create the JSON string from the transformed data list
         String jsonOutput = "";
@@ -54,6 +61,7 @@ log.info("output json for API request:{}", jsonOutput.toString());
     }
 
     private Map<String, Object> transformCsvData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
+
         // Check if the data is valid based on the configuration rules
         if (!utils.validateData(csvData, dynamicConfiguration)) {
             log.warn("Invalid data found for CsvData with SystemId: {}", csvData.getSystemId());
@@ -82,6 +90,13 @@ log.info("output json for API request:{}", jsonOutput.toString());
         }
         log.info("transformCsvData: {}", transformedData.toString());
         return transformedData;
+    }
+    public static String getFileName(String path) {
+        // Create a Path object from the input path
+        Path filePath = Paths.get(path);
+
+        // Get the filename from the Path object
+        return filePath.getFileName().toString();
     }
 
 }

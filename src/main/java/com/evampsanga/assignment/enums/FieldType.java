@@ -1,16 +1,15 @@
-package com.evampsanga.assignment.models;
+package com.evampsanga.assignment.enums;
+
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public enum DataType {
-    Text("Text"),
-    Integer("Integer"),
-    Decimal("Decimal"),
-    Bool("Bool"),
-    Date("Date");
+public enum FieldType {
+    Regular("Regular"),
+    ActionCode("ActionCode"),
+    EmployeeCode("EmployeeCode");
 
     @Getter
     @JsonValue

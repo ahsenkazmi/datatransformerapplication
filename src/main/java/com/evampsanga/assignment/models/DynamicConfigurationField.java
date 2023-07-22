@@ -1,5 +1,7 @@
 package com.evampsanga.assignment.models;
 
+import com.evampsanga.assignment.enums.DataType;
+import com.evampsanga.assignment.enums.FieldType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
@@ -31,6 +33,6 @@ public class DynamicConfigurationField {
     private Integer regexCaptureGroupNr;
 
     public String entityKey() {
-        return targetEntity == null ? this.getSourceField() : targetEntity + "." + targetField;
+        return targetEntity == null ? this.getSourceField().toLowerCase() : targetEntity + "." + targetField;
     }
 }

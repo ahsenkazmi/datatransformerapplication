@@ -4,19 +4,21 @@ import com.evampsanga.assignment.responses.PayComponent;
 import com.evampsanga.assignment.responses.Payload;
 import com.evampsanga.assignment.responses.ResponseVO;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+@Slf4j
 public class ResponseParser {
 
-    public ResponseVO createResponseVOJson(List<Map<String, Object>> transformedDataList) {
+    public ResponseVO createResponseVOJson(Map<String, Object> responseMap) {
         List<ResponseVO> responseVoList = new ArrayList<>();
 
         ResponseVO responseVo = new ResponseVO();
-        responseVo.setUuid(UUID.randomUUID().toString());
-        responseVo.setFname("input.txt");
+        responseVo.setUuid(getStringValue(responseMap.get("uuid")));
+        responseVo.setFname(getStringValue(responseMap.get("fname")));
         List<Payload> payloads = new ArrayList<>();
-        for (Map<String, Object> transformedData : transformedDataList) {
+        for (Map<String, Object> transformedData :(List<Map<String, Object>>) responseMap.get("payload")) {
             Payload payload = createPayloadJson(transformedData);
             payloads.add(payload);
         }
@@ -26,7 +28,7 @@ public class ResponseParser {
 
     public Payload createPayloadJson(Map<String, Object> transformedData) {
         Payload payload = new Payload();
-        payload.setEmployeeCode(getStringValue(transformedData.get("contract_workerId")));
+        payload.setEmployeeCode(getStringValue(transformedData.get("contract_workerid")));
         payload.setAction(getStringValue(transformedData.get("action")));
         Map<String, String> data = new HashMap<>();
         data.put("person.full_name", getStringValue(transformedData.get("person.full_name")));

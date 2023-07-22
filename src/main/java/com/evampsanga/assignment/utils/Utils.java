@@ -2,7 +2,7 @@ package com.evampsanga.assignment.utils;
 
 import com.evampsanga.assignment.configs.AppConfiguration;
 import com.evampsanga.assignment.models.CsvData;
-import com.evampsanga.assignment.models.DataType;
+import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.evampsanga.assignment.models.DynamicConfigurationField;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ private final AppConfiguration configs;
             if (!field.isMandatory() && fieldValue.isEmpty()) {
                 continue;
             }
-            if (!(validateDataType(fieldValue, field.getDataType()) )) {
+            if (!(validateDataType(fieldValue, field.getDataType(), field.getDateFormat()) )) {
                 return false;
             }
         }
@@ -52,7 +52,7 @@ private final AppConfiguration configs;
     }
 
     // DataTransformer class
-    public static boolean validateDataType(String value, DataType dataType) {
+    public static boolean validateDataType(String value, DataType dataType, String dateFormat) {
         switch (dataType) {
             case Text:
                 return true; // No specific validation for Text type, return true for simplicity
@@ -63,7 +63,7 @@ private final AppConfiguration configs;
             case Bool:
                 return isValidBoolean(value);
             case Date:
-                return isValidDate(value, DynamicConfiguration.GLOBAL_DATE_FORMAT);
+                return isValidDate(value,dateFormat);
             default:
                 return true; // Handle other data types as per requirements
         }

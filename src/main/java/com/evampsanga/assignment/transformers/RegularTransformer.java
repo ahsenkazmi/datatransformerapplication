@@ -3,7 +3,7 @@ package com.evampsanga.assignment.transformers;
 import com.evampsanga.assignment.configs.AppConfiguration;
 import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.evampsanga.assignment.models.CsvData;
-import com.evampsanga.assignment.models.DataType;
+import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.evampsanga.assignment.models.DynamicConfigurationField;
 import com.evampsanga.assignment.utils.Utils;
@@ -57,7 +57,7 @@ RegularTransformer implements DataTransformationStrategy {
 
         // Validate data type if specified in the dynamic configuration
         if (field.getDataType() != null) {
-            if (!Utils.validateDataType(fieldValue, field.getDataType())) {
+            if (!Utils.validateDataType(fieldValue, field.getDataType(), field.getDateFormat())) {
                 log.warn("Invalid data type for field: {} with value: {} for CsvData with SystemId: {}",
                         fieldName, fieldValue, csvData.getSystemId());
                 return null;
