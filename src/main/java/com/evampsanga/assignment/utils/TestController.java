@@ -1,4 +1,4 @@
-package com.evampsanga.assignment;
+package com.evampsanga.assignment.utils;
 
 import com.evampsanga.assignment.services.DataTransformationService;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,8 @@ public class TestController {
     }
 
     @GetMapping("/")
-    public void test(){
-        dataTransformationService.transformData("files/input_01.csv", "files/dynamic_config.json");
+    public String test(){
+        return dataTransformationService.transformData("files/input_01.csv", "files/dynamic_config.json");
     }
 
 }

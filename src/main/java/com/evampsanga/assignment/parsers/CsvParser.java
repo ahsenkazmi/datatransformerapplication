@@ -1,4 +1,4 @@
-package com.evampsanga.assignment.parser;
+package com.evampsanga.assignment.parsers;
 
 import com.evampsanga.assignment.models.CsvData;
 import com.opencsv.CSVReader;

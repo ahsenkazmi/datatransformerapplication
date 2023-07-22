@@ -1,6 +1,8 @@
 package com.evampsanga.assignment.transformers;
 
 import com.evampsanga.assignment.models.*;
+import com.evampsanga.assignment.parsers.ResponseParser;
+import com.evampsanga.assignment.responses.ResponseVO;
 import com.evampsanga.assignment.utils.Utils;
 import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,15 +18,16 @@ import java.util.*;
 @Component
 public class DataTransformer {
 
+
     private final List<DataTransformationStrategy> transformationStrategies;
     private final ObjectMapper objectMapper;
-    private final SimpleDateFormat dateFormat;
+    private final Utils utils;
 
     @Autowired
-    public DataTransformer(List<DataTransformationStrategy> transformationStrategies, ObjectMapper objectMapper) {
+    public DataTransformer(List<DataTransformationStrategy> transformationStrategies, ObjectMapper objectMapper, Utils utils) {
         this.transformationStrategies = transformationStrategies;
         this.objectMapper = objectMapper;
-        this.dateFormat = new SimpleDateFormat(DynamicConfiguration.GLOBAL_DATE_FORMAT);
+        this.utils = utils;
     }
 
     public String transformToJSON(List<CsvData> csvDataList, DynamicConfiguration dynamicConfiguration) {
@@ -36,11 +39,13 @@ public class DataTransformer {
                 transformedDataList.add(transformedData);
             }
         }
+        ResponseParser responseParser = new ResponseParser();
+        ResponseVO responseVO = responseParser.createResponseVOJson(transformedDataList);
 
         // Create the JSON string from the transformed data list
         String jsonOutput = "";
         try {
-            jsonOutput = objectMapper.writeValueAsString(transformedDataList);
+            jsonOutput = objectMapper.writeValueAsString(responseVO);
         } catch (JsonProcessingException e) {
             log.error("Error converting data to JSON: {}", e.getMessage());
         }
@@ -50,10 +55,11 @@ log.info("output json for API request:{}", jsonOutput.toString());
 
     private Map<String, Object> transformCsvData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
         // Check if the data is valid based on the configuration rules
-        if (!Utils.validateData(csvData, dynamicConfiguration)) {
+        if (!utils.validateData(csvData, dynamicConfiguration)) {
             log.warn("Invalid data found for CsvData with SystemId: {}", csvData.getSystemId());
             return null;
         }
+
 
         // Transform data based on the dynamic configuration and appropriate strategy
         Map<String, Object> transformedData = new HashMap<>();
@@ -62,8 +68,13 @@ log.info("output json for API request:{}", jsonOutput.toString());
             for (DataTransformationStrategy strategy : transformationStrategies) {
                 if (strategy.supports(fieldType)) {
                     Map<String, Object> strategyTransformedData = strategy.transform(csvData, field, dynamicConfiguration);
-                    if (strategyTransformedData != null) {
-                        transformedData.putAll(strategyTransformedData);
+                    if (strategyTransformedData != null ) {
+                        if(!transformedData.keySet().containsAll(strategyTransformedData.keySet())){
+                            transformedData.putAll(strategyTransformedData);
+                        } else {
+                            log.warn("redundant data :{}", strategyTransformedData.toString());
+                        }
+
                     }
                     break;
                 }
@@ -72,4 +83,5 @@ log.info("output json for API request:{}", jsonOutput.toString());
         log.info("transformCsvData: {}", transformedData.toString());
         return transformedData;
     }
+
 }

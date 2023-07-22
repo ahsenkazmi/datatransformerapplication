@@ -1,10 +1,13 @@
 package com.evampsanga.assignment.utils;
 
+import com.evampsanga.assignment.configs.AppConfiguration;
 import com.evampsanga.assignment.models.CsvData;
 import com.evampsanga.assignment.models.DataType;
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.evampsanga.assignment.models.DynamicConfigurationField;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,10 +15,18 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 @Slf4j
 public class Utils {
 
-    public static boolean validateData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
+private final AppConfiguration configs;
+
+@Autowired
+    public Utils(AppConfiguration configs) {
+    this.configs = configs;
+    }
+
+    public boolean validateData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
         for (DynamicConfigurationField field : dynamicConfiguration.getFields()) {
             if (field.isMandatory()) {
                 String fieldName = field.getSourceField();
@@ -92,7 +103,7 @@ public class Utils {
     }
 
     // Implement the date formatting logic
-    public static String formatDate(String value, String dateFormat) {
+    public  String formatDate(String value, String dateFormat) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
             Date date = sdf.parse(value);

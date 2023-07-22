@@ -14,6 +14,7 @@ import java.util.Map;
 public class ActionCodeTransformer implements DataTransformationStrategy {
 
 
+    public static final String ACTION_CODE_STRATEGY = "ActionCode";
 
     @Override
     public Map<String, Object> transform(CsvData csvData, DynamicConfigurationField field,  DynamicConfiguration dynamicConfiguration ) {
@@ -48,14 +49,12 @@ public class ActionCodeTransformer implements DataTransformationStrategy {
                 return null;
             }
         }
-
+        log.info("fieldName :{} , fieldValue:{} , complete json:{}",fieldName, fieldValue, jsonData.toString());
         return jsonData;
     }
 
     @Override
     public boolean supports(String fieldType) {
-        return  fieldType.equals("ActionCode");
+        return  fieldType.equals(ACTION_CODE_STRATEGY);
     }
-
-    // Other methods in ActionCodeTransformer (validateDataType, isValidInteger, isValidDecimal, isValidBoolean, isValidDate, formatDate) remain the same as in DataTransformer.
 }
