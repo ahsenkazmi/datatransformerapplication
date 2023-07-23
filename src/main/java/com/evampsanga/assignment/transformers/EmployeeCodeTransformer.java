@@ -1,9 +1,9 @@
 package com.evampsanga.assignment.transformers;
 
 import com.evampsanga.assignment.configs.AppConfiguration;
+import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.evampsanga.assignment.models.CsvData;
-import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.evampsanga.assignment.models.DynamicConfigurationField;
 import com.evampsanga.assignment.utils.Utils;
@@ -46,6 +46,7 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
         String fieldName = field.getSourceField();
         String fieldValue = csvData.getFieldValue(fieldName);
 
+        // Generate employee code if not provided when hiring a new person
         if (fieldName.equalsIgnoreCase(CONTRACT_WORKER_ID)
                 && csvData.getAction().equalsIgnoreCase(ACTION_HIRE)
                 && (fieldValue == null || fieldValue.isEmpty())) {
@@ -69,8 +70,6 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
             log.warn("Mandatory field missing: {} for CsvData with SystemId: {}", fieldName, csvData.getSystemId());
             return null;
         }
-        // Generate employee code if not provided when hiring a new person
-
 
         // Validate data type if specified in the dynamic configuration
         if (field.getDataType() != null) {
@@ -87,7 +86,7 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
         }
 
         jsonData.put(field.entityKey(), fieldValue);
-        log.info("fieldName :{} , fieldValue:{} , complete json:{}",fieldName, fieldValue, jsonData.toString());
+        log.info("fieldName :{} , fieldValue:{} , complete json:{}", fieldName, fieldValue, jsonData.toString());
         return jsonData;
     }
 
@@ -110,7 +109,6 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
         }
         return employeeCode;
     }
-
 
     private String getCurrentDate() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyy"));

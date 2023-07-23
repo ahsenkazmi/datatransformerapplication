@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "system.config")
+@ConfigurationProperties(prefix = "app")
 public class AppConfiguration {
     private String inputFilePath;
     private String dynamicConfig;

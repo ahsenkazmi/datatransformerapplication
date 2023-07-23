@@ -14,5 +14,5 @@ public enum DataType {
 
     @Getter
     @JsonValue
-    private final String typeName;
+    private final String dataType;
 }

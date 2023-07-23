@@ -29,7 +29,6 @@ public class DataTransformationService {
     public String transformData() {
         List<CsvData> csvDataList = csvParser.parseCsvFile(appConfiguration.getInputFilePath());
         DynamicConfiguration dynamicConfiguration = dynamicConfiguratoinService.loadDynamicConfiguration(appConfiguration.getDynamicConfig());
-
         return dataTransformer.transformToJSON(csvDataList, dynamicConfiguration);
     }
 

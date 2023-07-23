@@ -1,11 +1,13 @@
 package com.evampsanga.assignment.transformers;
 
 import com.evampsanga.assignment.configs.AppConfiguration;
-import com.evampsanga.assignment.models.*;
+import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
+import com.evampsanga.assignment.models.CsvData;
+import com.evampsanga.assignment.models.DynamicConfiguration;
+import com.evampsanga.assignment.models.DynamicConfigurationField;
 import com.evampsanga.assignment.parsers.ResponseParser;
 import com.evampsanga.assignment.responses.ResponseVO;
 import com.evampsanga.assignment.utils.Utils;
-import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ public class DataTransformer {
     private final List<DataTransformationStrategy> transformationStrategies;
     private final Utils utils;
     private final AppConfiguration config;
-    private  ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public DataTransformer(List<DataTransformationStrategy> transformationStrategies, Utils utils, AppConfiguration config) {
@@ -56,18 +58,16 @@ public class DataTransformer {
         } catch (JsonProcessingException e) {
             log.error("Error converting data to JSON: {}", e.getMessage());
         }
-log.info("output json for API request:{}", jsonOutput.toString());
+        log.info("output json for API request:{}", jsonOutput.toString());
         return jsonOutput;
     }
 
     private Map<String, Object> transformCsvData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
-
         // Check if the data is valid based on the configuration rules
         if (!utils.validateData(csvData, dynamicConfiguration)) {
             log.warn("Invalid data found for CsvData with SystemId: {}", csvData.getSystemId());
             return null;
         }
-
 
         // Transform data based on the dynamic configuration and appropriate strategy
         Map<String, Object> transformedData = new HashMap<>();
@@ -76,21 +76,21 @@ log.info("output json for API request:{}", jsonOutput.toString());
             for (DataTransformationStrategy strategy : transformationStrategies) {
                 if (strategy.supports(fieldType)) {
                     Map<String, Object> strategyTransformedData = strategy.transform(csvData, field, dynamicConfiguration);
-                    if (strategyTransformedData != null ) {
-                        if(!transformedData.keySet().containsAll(strategyTransformedData.keySet())){
+                    if (strategyTransformedData != null) {
+                        if (!transformedData.keySet().containsAll(strategyTransformedData.keySet())) {
                             transformedData.putAll(strategyTransformedData);
                         } else {
-                            log.warn("redundant data :{}", strategyTransformedData.toString());
+                            log.warn("skipping redundant data :{}", strategyTransformedData.toString());
                         }
-
                     }
                     break;
                 }
             } //end for strategy loop
         }
-        log.info("transformCsvData: {}", transformedData.toString());
+        log.info("transformed CsvData: {}", transformedData.toString());
         return transformedData;
     }
+
     public static String getFileName(String path) {
         // Create a Path object from the input path
         Path filePath = Paths.get(path);

@@ -22,7 +22,7 @@ public class CsvParser {
     private final ResourceLoader resourceLoader;
 
     @Autowired
-    public CsvParser( ResourceLoader resourceLoader) {
+    public CsvParser(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
@@ -43,14 +43,16 @@ public class CsvParser {
                 csvDataList.add(rowData);
             }
         } catch (IOException e) {
-            // Handle any exceptions that occur during file reading or parsing
+            log.error("IO Exception occurred while reading csv:{}", e.getMessage());
             e.printStackTrace();
         } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
+            log.error("csv file validation failed:{}", e.getMessage());
+            e.printStackTrace();
         }
         return csvDataList;
     }
-    private CsvData createCsvData( String[] row){
+
+    private CsvData createCsvData(String[] row) {
 
         CsvData csvData = new CsvData();
         csvData.setSystemId(row[0]);

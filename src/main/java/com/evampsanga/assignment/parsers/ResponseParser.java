@@ -3,22 +3,21 @@ package com.evampsanga.assignment.parsers;
 import com.evampsanga.assignment.responses.PayComponent;
 import com.evampsanga.assignment.responses.Payload;
 import com.evampsanga.assignment.responses.ResponseVO;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Slf4j
 public class ResponseParser {
 
     public ResponseVO createResponseVOJson(Map<String, Object> responseMap) {
         List<ResponseVO> responseVoList = new ArrayList<>();
-
         ResponseVO responseVo = new ResponseVO();
         responseVo.setUuid(getStringValue(responseMap.get("uuid")));
         responseVo.setFname(getStringValue(responseMap.get("fname")));
         List<Payload> payloads = new ArrayList<>();
-        for (Map<String, Object> transformedData :(List<Map<String, Object>>) responseMap.get("payload")) {
+        for (Map<String, Object> transformedData : (List<Map<String, Object>>) responseMap.get("payload")) {
             Payload payload = createPayloadJson(transformedData);
             payloads.add(payload);
         }

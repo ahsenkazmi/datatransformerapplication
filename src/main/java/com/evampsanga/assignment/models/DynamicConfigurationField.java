@@ -9,19 +9,16 @@ import lombok.Getter;
 @Getter
 @Data
 public class DynamicConfigurationField {
-//    private FieldType fieldType = FieldType.Regular;
+
     private FieldType fieldType;
 
     @JsonFormat(shape = JsonFormat.Shape.BOOLEAN)
     private boolean isMandatory = false;
 
     private String sourceField;
-
     private String targetEntity;
-
     private String targetField;
 
-//    private DataType dataType = DataType.Text;
     private DataType dataType;
 
     private String mappingKey;

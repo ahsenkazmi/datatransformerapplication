@@ -1,5 +1,6 @@
 package com.evampsanga.assignment.transformers;
 // ActionCodeTransformer.java
+
 import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.evampsanga.assignment.models.CsvData;
 import com.evampsanga.assignment.models.DynamicConfiguration;
@@ -7,8 +8,10 @@ import com.evampsanga.assignment.models.DynamicConfigurationField;
 import com.evampsanga.assignment.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
+
 @Slf4j
 @Component
 public class ActionCodeTransformer implements DataTransformationStrategy {
@@ -17,7 +20,7 @@ public class ActionCodeTransformer implements DataTransformationStrategy {
     public static final String ACTION_CODE_STRATEGY = "ActionCode";
 
     @Override
-    public Map<String, Object> transform(CsvData csvData, DynamicConfigurationField field,  DynamicConfiguration dynamicConfiguration ) {
+    public Map<String, Object> transform(CsvData csvData, DynamicConfigurationField field, DynamicConfiguration dynamicConfiguration) {
         Map<String, Object> jsonData = new HashMap<>();
 
         String fieldName = field.getSourceField();
@@ -49,12 +52,12 @@ public class ActionCodeTransformer implements DataTransformationStrategy {
                 return null;
             }
         }
-        log.info("fieldName :{} , fieldValue:{} , complete json:{}",fieldName, fieldValue, jsonData.toString());
+        log.info("fieldName :{} , fieldValue:{} , complete json:{}", fieldName, fieldValue, jsonData.toString());
         return jsonData;
     }
 
     @Override
     public boolean supports(String fieldType) {
-        return  fieldType.equals(ACTION_CODE_STRATEGY);
+        return fieldType.equals(ACTION_CODE_STRATEGY);
     }
 }

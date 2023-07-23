@@ -1,9 +1,9 @@
 package com.evampsanga.assignment.transformers;
 
 import com.evampsanga.assignment.configs.AppConfiguration;
+import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.interfaces.DataTransformationStrategy;
 import com.evampsanga.assignment.models.CsvData;
-import com.evampsanga.assignment.enums.DataType;
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.evampsanga.assignment.models.DynamicConfigurationField;
 import com.evampsanga.assignment.utils.Utils;
@@ -24,7 +24,7 @@ RegularTransformer implements DataTransformationStrategy {
     private final TerminationHandler terminationHandler;
     public static final String REGULAR_STRATEGY = "Regular";
     public static final String ACTION_UPDATE = "update";
-    public static final String ACTOIN_CODE_DELETE = "delete";
+    public static final String ACTOIN_DELETE = "delete";
     public static final String CONTRACT_END_DATE = "contract_endDate";
 
     @Autowired
@@ -41,8 +41,9 @@ RegularTransformer implements DataTransformationStrategy {
         String fieldName = field.getSourceField();
         String fieldValue = csvData.getFieldValue(fieldName);
 
+//        Generate Termination date if not provided in 'delete' action
         if (fieldName.equalsIgnoreCase(CONTRACT_END_DATE)
-                && csvData.getAction().equalsIgnoreCase(ACTOIN_CODE_DELETE)) {
+                && csvData.getAction().equalsIgnoreCase(ACTOIN_DELETE)) {
             if (csvData.getContractWorkerId() == null || csvData.getContractWorkerId().isEmpty()) {
                 return null; // Discard data if employee code is missing in case of termination
             }
@@ -82,8 +83,6 @@ RegularTransformer implements DataTransformationStrategy {
         }
 
         jsonData.put(field.entityKey(), fieldValue);
-
-        log.info("fieldName :{} , fieldValue:{} , complete json:{}",fieldName, fieldValue, jsonData.toString());
         return jsonData;
     }
 

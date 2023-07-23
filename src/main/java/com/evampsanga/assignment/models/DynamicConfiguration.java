@@ -28,5 +28,4 @@ public class DynamicConfiguration {
         return mappings.get(mappingKey).getOrDefault(input, null);
     }
 
-    public static final String GLOBAL_DATE_FORMAT = "ddMMyy";
 }

@@ -15,7 +15,7 @@ public class DataController {
     public DataController(DataTransformationService dataTransformationService) {
         this.dataTransformationService = dataTransformationService;
     }
-    
+
     @PostMapping("/")
     public ResponseEntity<String> processData(@RequestBody String data) {
 

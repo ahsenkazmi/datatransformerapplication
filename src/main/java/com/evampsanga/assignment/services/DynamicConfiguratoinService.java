@@ -2,6 +2,7 @@ package com.evampsanga.assignment.services;
 
 import com.evampsanga.assignment.models.DynamicConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -10,10 +11,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Slf4j
 @Component
 public class DynamicConfiguratoinService {
-
-
     private final ResourceLoader resourceLoader;
 
     @Autowired
@@ -23,16 +23,15 @@ public class DynamicConfiguratoinService {
 
     public DynamicConfiguration loadDynamicConfiguration(String configFilePath) {
         ObjectMapper objectMapper = new ObjectMapper();
-        // Get the resource from the resources folder
+        DynamicConfiguration dynamicConfiguration = null;
         Resource resource = resourceLoader.getResource("classpath:" + configFilePath);
-
-        // Read the JSON content using an InputStream
-        try  {
+        try {
             InputStream inputStream = resource.getInputStream();
-            DynamicConfiguration dynamicConfiguration = objectMapper.readValue(inputStream, DynamicConfiguration.class);
-            return dynamicConfiguration;
+            dynamicConfiguration = objectMapper.readValue(inputStream, DynamicConfiguration.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Exception occurred while loading dynamic_configuration file :{}", e.getMessage());
+            e.printStackTrace();
         }
+        return dynamicConfiguration;
     }
 }
