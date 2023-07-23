@@ -1,7 +1,38 @@
 {
-  "uuid": "eaf34590-d371-403d-9b6b-863303fea81e",
+  "uuid": "cb1069c8-54fd-4b26-bb42-14d2b473822b",
   "fname": "input_01.csv",
-  "errors": null,
+  "errors": [
+    "Invalid data found for compensation_amount, for data with systemId02EDC235D00C4FF1A7245550E4EC3216",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId02EDC235D00C4FF1A7245550E4EC3216",
+    "Invalid data found for compensation_effectiveTo, for data with systemId02EDC235D00C4FF1A7245550E4EC3216",
+    "Invalid data found for contract_workStartDate, for data with systemId98CBACE8E0694049AFF768B747441F89",
+    "Invalid data found for compensation_amount, for data with systemId98CBACE8E0694049AFF768B747441F89",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId98CBACE8E0694049AFF768B747441F89",
+    "Invalid data found for compensation_effectiveTo, for data with systemId98CBACE8E0694049AFF768B747441F89",
+    "Invalid data found for compensation_amount, for data with systemId91E58776B2CC43CDB4C12E02EE7D0169",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId91E58776B2CC43CDB4C12E02EE7D0169",
+    "Invalid data found for compensation_effectiveTo, for data with systemId91E58776B2CC43CDB4C12E02EE7D0169",
+    "Invalid data found for compensation_amount, for data with systemId65F7F49843B04AE6B871ABBBAB03B8EC",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId65F7F49843B04AE6B871ABBBAB03B8EC",
+    "Invalid data found for compensation_effectiveTo, for data with systemId65F7F49843B04AE6B871ABBBAB03B8EC",
+    "Invalid data found for contract_workStartDate, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for pay_amount, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for pay_effectiveFrom, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for pay_effectiveTo, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for compensation_amount, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for compensation_effectiveFrom, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for compensation_effectiveTo, for data with systemIdAE14B9E3D40941D7B24119215BBE2F6C",
+    "Invalid data found for pay_amount, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for pay_effectiveFrom, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for pay_effectiveTo, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for compensation_amount, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for compensation_effectiveTo, for data with systemId3BCCBF9330164EF79D86F239F9875C32",
+    "Invalid data found for pay_amount, for data with systemId6DC7CCC5F48543E5BE6243957EED0A14",
+    "Invalid data found for compensation_amount, for data with systemId6DC7CCC5F48543E5BE6243957EED0A14",
+    "Invalid data found for compensation_effectiveFrom, for data with systemId6DC7CCC5F48543E5BE6243957EED0A14",
+    "Invalid data found for compensation_effectiveTo, for data with systemId6DC7CCC5F48543E5BE6243957EED0A14"
+  ],
   "payload": [
     {
       "employeeCode": "660831F5",
@@ -23,7 +54,7 @@
       ]
     },
     {
-      "employeeCode": "8007247F",
+      "employeeCode": "80072480",
       "action": "hire",
       "data": {
         "person.hire_date": "310513",
@@ -42,7 +73,7 @@
       ]
     },
     {
-      "employeeCode": "900405A3",
+      "employeeCode": "90040543",
       "action": "change",
       "data": {
         "person.hire_date": "310515",
