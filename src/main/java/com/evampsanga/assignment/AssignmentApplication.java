@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @SpringBootApplication
-//@ComponentScan( basePackages = {"com.evampsanga.assignment"/*,"com.evampsanga.assignment.configs", "com.evampsanga.assignment.utils"*/})
 public class AssignmentApplication {
 
     @Autowired
