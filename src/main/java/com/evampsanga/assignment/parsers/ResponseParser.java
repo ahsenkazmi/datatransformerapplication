@@ -14,14 +14,20 @@ public class ResponseParser {
     public ResponseVO createResponseVOJson(Map<String, Object> responseMap) {
         List<ResponseVO> responseVoList = new ArrayList<>();
         ResponseVO responseVo = new ResponseVO();
+        List<String> errors = new ArrayList<>();
         responseVo.setUuid(getStringValue(responseMap.get("uuid")));
         responseVo.setFname(getStringValue(responseMap.get("fname")));
         List<Payload> payloads = new ArrayList<>();
         for (Map<String, Object> transformedData : (List<Map<String, Object>>) responseMap.get("payload")) {
+            if(transformedData.get("errors") != null){
+                errors.addAll(getErrorsValue((List<String>) transformedData.get("errors")));
+                continue;
+            }
             Payload payload = createPayloadJson(transformedData);
             payloads.add(payload);
         }
         responseVo.setPayload(payloads);
+        responseVo.setErrors(errors);
         return responseVo;
     }
 
@@ -49,6 +55,13 @@ public class ResponseParser {
         return payComponent;
     }
 
+    private List<String> getErrorsValue(List<String> errors) {
+        if (errors != null  && errors.size() > 0) {
+            return errors;
+        } else {
+            return new ArrayList<>(); // or return an empty list, depending on your use case
+        }
+    }
     private String getStringValue(Object value) {
         return value != null ? String.valueOf(value) : null;
     }
