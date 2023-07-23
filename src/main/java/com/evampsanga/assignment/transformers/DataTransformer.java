@@ -63,10 +63,12 @@ public class DataTransformer {
     }
 
     private Map<String, Object> transformCsvData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
+        Map<String, Object>errors = new HashMap<>();
         // Check if the data is valid based on the configuration rules
-        if (!utils.validateData(csvData, dynamicConfiguration)) {
+        if (utils.validateData(csvData, dynamicConfiguration).size()> 0) {
             log.warn("Invalid data found for CsvData with SystemId: {}", csvData.getSystemId());
-            return null;
+            errors.put("errors", utils.validateData(csvData, dynamicConfiguration));
+            return errors;
         }
 
         // Transform data based on the dynamic configuration and appropriate strategy

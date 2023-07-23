@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,13 +28,14 @@ public class Utils {
         this.configs = configs;
     }
 
-    public boolean validateData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
+    public List<String> validateData(CsvData csvData, DynamicConfiguration dynamicConfiguration) {
+        List<String> errors = new ArrayList<>();
         for (DynamicConfigurationField field : dynamicConfiguration.getFields()) {
             if (field.isMandatory()) {
                 String fieldName = field.getSourceField();
                 if (!csvData.hasField(fieldName)) {
                     log.warn("Mandatory field missing: {} for CsvData with SystemId: {}", fieldName, csvData.getSystemId());
-                    return false;
+                    errors.add(getMandatoryErrorString( fieldName, csvData.getSystemId()));
                 }
             }
             // Validate data type if specified in the dynamic configuration
@@ -44,10 +47,11 @@ public class Utils {
                 continue;
             }
             if (!(validateDataType(fieldValue, field.getDataType(), field.getDateFormat()))) {
-                return false;
+                errors.add("Invalid data found for "+field.getSourceField()+", for data with systemId"+ csvData.getSystemId());
+
             }
         }
-        return true;
+        return errors;
     }
 
     public static boolean validateDataType(String value, DataType dataType, String dateFormat) {
@@ -139,6 +143,10 @@ public class Utils {
             log.info("Input string does not match the regex");
             return null;
         }
+    }
+
+    public String getMandatoryErrorString(String fieldName, String systemId){
+        return "Mandatory field: "+fieldName+" missing from CsvData with SystemId:"+  systemId;
     }
 
 }

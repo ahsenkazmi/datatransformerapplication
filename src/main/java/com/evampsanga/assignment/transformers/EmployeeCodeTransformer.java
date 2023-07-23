@@ -30,7 +30,7 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
     public static final String ACTION_HIRE = "add";
     public static final String CONTRACT_END_DATE = "contract_endDate";
     public static final String EMPLOYEE_CODE_FORMAT = "yyMMdd";
-    public static final int ORDER_NUMBER_LIMIT = 256;
+    public static final int ORDER_NUMBER_LIMIT = 255;
 
     @Autowired
     public EmployeeCodeTransformer(Utils utils, AppConfiguration config, TerminationHandler terminationHandler) {
@@ -52,7 +52,8 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
                 && (fieldValue == null || fieldValue.isEmpty())) {
             fieldValue = generateEmployeeCode(csvData);
             if (fieldValue == null) {
-                return null; // Discard data if employee code and first work day are missing
+                jsonData.put("error", "employee code and first work day are missing for systemId:"+csvData.getSystemId());
+                return jsonData; // Discard data if employee code and first work day are missing
             }
             csvData.setContractWorkerId(fieldValue);
         }
@@ -60,7 +61,8 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
         if (fieldName.equalsIgnoreCase(CONTRACT_END_DATE)
                 && csvData.getAction().equalsIgnoreCase(ACTOIN_DELETE)) {
             if (csvData.getContractWorkerId() == null || csvData.getContractWorkerId().isEmpty()) {
-                return null; // Discard data if employee code is missing in case of termination
+                jsonData.put("error", "employee code is missing for termination action for systemId:"+csvData.getSystemId());
+                return jsonData; // Discard data if employee code is missing in case of termination
             }
             fieldValue = terminationHandler.handleTermination(csvData);
             csvData.setContractEndDate(fieldValue);
@@ -68,7 +70,8 @@ public class EmployeeCodeTransformer implements DataTransformationStrategy {
 
         if (field.isMandatory() && (fieldValue == null || fieldValue.isEmpty())) {
             log.warn("Mandatory field missing: {} for CsvData with SystemId: {}", fieldName, csvData.getSystemId());
-            return null;
+            jsonData.put("error", utils.getMandatoryErrorString(fieldName, csvData.getSystemId()));
+            return jsonData;
         }
 
         // Validate data type if specified in the dynamic configuration
