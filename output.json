@@ -1,0 +1,64 @@
+{
+  "uuid": "eaf34590-d371-403d-9b6b-863303fea81e",
+  "fname": "input_01.csv",
+  "errors": null,
+  "payload": [
+    {
+      "employeeCode": "660831F5",
+      "action": "change",
+      "data": {
+        "person.hire_date": "060998",
+        "person.full_name": "Hazel Webster",
+        "person.gender": "female",
+        "person.birthdate": "051031",
+        "person.termination_date": null
+      },
+      "payComponents": [
+        {
+          "amount": 4400,
+          "currency": "EUR",
+          "startDate": "010122",
+          "endDate": "310122"
+        }
+      ]
+    },
+    {
+      "employeeCode": "8007247F",
+      "action": "hire",
+      "data": {
+        "person.hire_date": "310513",
+        "person.full_name": "Brock Salazar",
+        "person.gender": "male",
+        "person.birthdate": "180924",
+        "person.termination_date": null
+      },
+      "payComponents": [
+        {
+          "amount": 1400,
+          "currency": "EUR",
+          "startDate": "010122",
+          "endDate": "310122"
+        }
+      ]
+    },
+    {
+      "employeeCode": "900405A3",
+      "action": "change",
+      "data": {
+        "person.hire_date": "310515",
+        "person.full_name": "Cole Sloan",
+        "person.gender": "male",
+        "person.birthdate": "290605",
+        "person.termination_date": null
+      },
+      "payComponents": [
+        {
+          "amount": 3000,
+          "currency": "EUR",
+          "startDate": "010122",
+          "endDate": "310122"
+        }
+      ]
+    }
+  ]
+}
